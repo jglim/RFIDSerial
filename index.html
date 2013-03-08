@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="RFIDSerial : Usable serial data from a cheap RFID reader via Teensy 2.0" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>RFIDSerial</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/jglim/RFIDSerial">View on GitHub</a>
+
+          <h1 id="project_title">RFIDSerial</h1>
+          <h2 id="project_tagline">Usable serial data from a cheap RFID reader via Teensy 2.0</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/jglim/RFIDSerial/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/jglim/RFIDSerial/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>RFIDSerial</h1>
+
+<p>Get usable serial data from your cheap RFID readers!</p>
+
+<ul>
+<li>Uses Teensy 2.0 (since there is a USB serial <em>and</em> a hardware serial)</li>
+<li>Reads and converts raw data into the card's 10 digit ID</li>
+<li>Outputs the data into the serial (separated by newlines)</li>
+</ul><p>I recently bought one of those affordable (~US$10) chinese RFID readers. Unfortunately the device only outputs to USB (appears as a keyboard). I wanted the output via the serial port as it was inconvenient that the RFID reader hijacks your keyboard everytime a card is scanned, hence I created this project.</p>
+
+<p>Using a logic analyser, I noticed that the pin labeled TX sends a serial output <code>(bit rate: 9600)</code> when a card is scanned. The format is as follows</p>
+
+<p><code>[card digit] [240] [card digit]</code>
+repeated 10 times</p>
+
+<p>I am not sure what the format for encoding the number is. However, since the character space should only span [0-9], I chose to decode it via a lookup table. 
+Please note that this table is incomplete - help would be appreciated! (see caveats)</p>
+
+<h2>How to use</h2>
+
+<p>Your RFID reader must be similar or exactly the same as mine - <a href="http://www.aliexpress.com/snapshot/211636793.html">this was the one I purchased.</a>
+On the board, there should be a few test points. The one we are interested in is the serial TX (refer to image)</p>
+
+<p><img src="https://raw.github.com/jglim/RFIDSerial/master/Images/rfid1.png" alt="RFID Board"></p>
+
+<ol>
+<li>Connect the TX pin from the reader to the RX pin of your Teensy (Pin 7/D2)</li>
+<li>Connect the RFID board's ground to your Teensy's ground</li>
+<li>Upload the sketch using Teensyduino</li>
+</ol><p>To prevent keystrokes being sent to the computer while supplying power, I believe it is possible to tape the USB data lines, leaving only 5V and GND</p>
+
+<h2>Caveats</h2>
+
+<ul>
+<li>The first digit is occassionally not sent (check whether the output's <code>length == 10</code>)</li>
+<li>The digits <code>4,7,8</code> are not implemented! It would be great if someone has a RFID card with those digits and can help add them!</li>
+</ul><h2>License</h2>
+
+<p>MIT</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">RFIDSerial maintained by <a href="https://github.com/jglim">jglim</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
